@@ -1,0 +1,14 @@
+# Do not remove this line or mod_rewrite rules and search engine friendly URLs will stop working
+RewriteEngine on 
+RewriteBase /
+Options +FollowSymLinks
+IndexIgnore */*
+ 
+# Если запрос не начинается с web, добавляем его
+RewriteCond %{REQUEST_URI} !^/(web)
+RewriteRule (.*) web/$1
+ 
+# Если файл или каталог не существует, идём к /web/index.php 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . web/index.php%{REQUEST_URI}
