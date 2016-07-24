@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\base\View;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\RegistrationForm;
@@ -127,10 +128,17 @@ class SiteController extends Controller
 
     public function actionRegistration(){
         $model = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post())){
+        $post =  Yii::$app->request->post();
+/*        if(!Yii::$app->request->post()){
+            $post['RegistrationForm'] = Yii::$app->request->post(); //for angular-1.php
+        }
+        else{
+            $post =  Yii::$app->request->post();
+        }*/
+        if ($model->load($post) or $model->load($post, '')){
             if($model->validate()){
                 $user = new User();
-                $user->customLoad(Yii::$app->request->post()['RegistrationForm']);
+                $user->customLoad($post, 'RegistrationForm') or $user->customLoad($post);
                 if($user->save(false)){
                     $login_model = new LoginForm();
                     return $this->render('login', ['model'=>$login_model]);
@@ -138,5 +146,9 @@ class SiteController extends Controller
             }
         }
         return $this->render('registration', ['model'=>$model]);
+    }
+
+    public function actionAngular(){
+        return $this->render('angular-1');
     }
 }

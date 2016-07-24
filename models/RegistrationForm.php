@@ -45,7 +45,7 @@ class RegistrationForm extends Model{
     }
 
     public function validatePassword($attribute, $params){
-        if(strlen($this->password)<7){
+        if(strlen($this->password)<6){
             $this->addError($attribute, 'Password must be at least 6 characters.');
         }
         if($this->password !== $this->confirmation){

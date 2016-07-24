@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-xs-4 col-xs-push-4">
-
+        <h1><?= Html::encode($this->title) ?></h1>
         <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
 
         <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>

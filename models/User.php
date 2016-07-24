@@ -58,12 +58,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return Yii::$app->getSecurity()->validatePassword($password, $hash);
     }
 
-    public function customLoad($data){
+    public function customLoad($data, $formName = ''){
         if(!is_array($data)){
             return false;
         }
+        if($formName && !$data[$formName]){
+            return false;
+        }
+        $data = ($formName)?$data[$formName]:$data;
+
         foreach($data as $property=>$value){
             if($property == 'confirmation'){continue;}
+            if($property == '_csrf'){continue;}
             if($property == 'password'){
                 $this->password = Yii::$app->getSecurity()->generatePasswordHash($value);
                 continue;
